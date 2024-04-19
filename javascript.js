@@ -1,15 +1,26 @@
 let displayValue = "";
-let num1;
-let num2;
+let userValue1;
+let userValue2;
 let operator;
+
+const display = document.querySelector(".screen");
 
 const numericBtns = document.querySelectorAll(".number")
 numericBtns.forEach((item) => item.addEventListener("click", function(event){
-    display(event.target.id);
-})) 
+    displayNum(event.target.id);
+})); 
 
-function display(num) {
-    const display = document.querySelector(".screen");
+const clear = document.querySelector("#clear");
+clear.addEventListener("click", function () {
+    num1 = "";
+    num2 = "";
+    displayValue = "";
+    display.innerHTML = "";
+});
+
+displayNum(displayValue);
+
+function displayNum(num) {
     displayValue = displayValue + num;
     display.innerHTML = displayValue;
 }
