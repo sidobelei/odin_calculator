@@ -1,4 +1,20 @@
-function operate (num1, num2, operator) {
+let displayValue = "";
+let num1;
+let num2;
+let operator;
+
+const numericBtns = document.querySelectorAll(".number")
+numericBtns.forEach((item) => item.addEventListener("click", function(event){
+    display(event.target.id);
+})) 
+
+function display(num) {
+    const display = document.querySelector(".screen");
+    displayValue = displayValue + num;
+    display.innerHTML = displayValue;
+}
+
+function operate(num1, num2, operator) {
     switch (operator) {
         case "add":
             add(num1, num2);
