@@ -28,17 +28,13 @@ function displayNum(num) {
 function operate(num1, num2, operator) {
     switch (operator) {
         case "add":
-            add(num1, num2);
-            break;
+            return add(num1, num2);
         case "subtract":
-            subtract(num1, num2);
-            break;
+            return subtract(num1, num2);
         case "multiply":
-            multiply(num1, num2);
-            break;
+            return multiply(num1, num2);
         case "divide":
-            division(num1, num2);
-            break;
+            return division(num1, num2);
     }
 }
 
