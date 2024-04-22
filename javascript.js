@@ -14,6 +14,7 @@ const clear = document.querySelector("#clear");
 clear.addEventListener("click", function () {
     num1 = "";
     num2 = "";
+    operator = "";
     displayValue = "";
     display.innerHTML = "";
 });
