@@ -56,6 +56,7 @@ function storeValue(operation) {
                 let product = operate(userValue1, userValue2, operator)
                 userValue1 = product;
                 clearDisplay = true;
+                product = product.toString();
                 displayNum(product);
                 numClick = false;
             }
@@ -98,6 +99,10 @@ function multiply (num1, num2) {
 } 
 
 function division (num1, num2) {
-    return num1 / num2;
-    //round decimals
+    let quotient = num1 / num2;
+    let splitNum = quotient.toString().split(".")
+    let wholeNum = splitNum[0].split("").length + 1;
+    let numLength = 9 - wholeNum;
+    quotient = Math.round(quotient * (10 ** numLength)) / (10 ** numLength);
+    return quotient;
 }
