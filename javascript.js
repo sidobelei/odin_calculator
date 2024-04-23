@@ -15,7 +15,8 @@ operations.forEach((item) => item.addEventListener("click", function(event) {
 
 const numericBtns = document.querySelectorAll(".number")
 numericBtns.forEach((item) => item.addEventListener("click", function(event){
-    displayNum(event.target.id);
+    let numId = event.target.id.slice(-1);
+    displayNum(numId);
     numClick = true;
 })); 
 
@@ -98,4 +99,5 @@ function multiply (num1, num2) {
 
 function division (num1, num2) {
     return num1 / num2;
+    //round decimals
 }
