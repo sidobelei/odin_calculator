@@ -50,7 +50,7 @@ function storeValue(operation) {
                 num2 = "";
                 operator = "";
                 equationComplete = false;
-                display.innerHTML = "CANNOT DIVIDE BY ZERO";
+                display.innerHTML = "🤨🤯😵😟";
             }
             else {
                 let product = operate(userValue1, userValue2, operator)
