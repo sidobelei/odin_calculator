@@ -134,7 +134,7 @@ function displayNum(num) {
     if (display.textContent === "0" && num === ".") {
         displayValue = "0";
     }
-    if (equationComplete || displayValue === "0") {
+    if (equationComplete && userValue2 != "" || displayValue === "0") {
         displayValue = "";
     }
     displayValue = displayValue + num;
