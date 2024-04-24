@@ -5,8 +5,17 @@ let operator = "";
 let clearDisplay = false;
 let numClick = false;
 let equationComplete = false;
+let decimalPressed = false;
 
 const display = document.querySelector(".screen");
+
+const decimal = document.querySelector("#decimal")
+decimal.addEventListener("click", function() {
+    if (decimalPressed === false) {
+        decimalPressed = true;
+        displayNum(".");
+    }
+})
 
 const operations = document.querySelectorAll(".operator");
 operations.forEach((item) => item.addEventListener("click", function(event) {
@@ -28,6 +37,7 @@ clear.addEventListener("click", function () {
     equationComplete = false;
     displayValue = "";
     display.innerHTML = "";
+    decimalPressed = false;
 });
 
 displayNum(displayValue);
@@ -38,11 +48,13 @@ function storeValue(operation) {
         userValue1 = Number(displayValue);
         clearDisplay = true;
         equationComplete = true;
+        decimalPressed = false;
     }
     else {
         if (equationComplete) {
             if (numClick === true) {
                 userValue2 = Number(displayValue);
+                decimalPressed = false;
             }
             if (userValue2 === 0 && operator === "divide") {
                 clearDisplay = true;
@@ -51,6 +63,7 @@ function storeValue(operation) {
                 operator = "";
                 equationComplete = false;
                 display.innerHTML = "🤨🤯😵😟";
+                decimalPressed = false;
             }
             else {
                 let product = operate(userValue1, userValue2, operator)
@@ -59,6 +72,7 @@ function storeValue(operation) {
                 product = product.toString();
                 displayNum(product);
                 numClick = false;
+                decimalPressed = false;
             }
         }
     }
