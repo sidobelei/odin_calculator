@@ -114,11 +114,20 @@ function storeValue(operation) {
                 decimalPressed = false;
             }
             else {
-                let product = operate(userValue1, userValue2, operator)
-                userValue1 = product;
+                let total = operate(userValue1, userValue2, operator);
+                userValue1 = total;
+                total = total.toString();
+                if (total.indexOf("\.") != -1){
+                    let splitNum = total.split(".")
+                    let wholeNum = splitNum[0].split("").length + 1;
+                    let numLength = 9 - wholeNum;
+                    total = Math.round(total * (10 ** numLength)) / (10 ** numLength);
+                }
+                else if (total.length > 9) {
+                    total = Number(total).toExponential(2);
+                }
                 clearDisplay = true;
-                product = product.toString();
-                displayNum(product);
+                displayNum(total);
                 numClick = false;
                 decimalPressed = false;
             }
@@ -135,6 +144,7 @@ function displayNum(num) {
         displayValue = "0";
     }
     if (equationComplete && userValue2 != "" || displayValue === "0") {
+        //check this weird zeroing error again
         displayValue = "";
     }
     if (displayValue.length < 9) {
@@ -169,10 +179,6 @@ function multiply (num1, num2) {
 } 
 
 function division (num1, num2) {
-    let quotient = num1 / num2;
-    let splitNum = quotient.toString().split(".")
-    let wholeNum = splitNum[0].split("").length + 1;
-    let numLength = 9 - wholeNum;
-    quotient = Math.round(quotient * (10 ** numLength)) / (10 ** numLength);
-    return quotient;
+    //let quotient = num1 / num2;
+    return num1 / num2;
 }
