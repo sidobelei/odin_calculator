@@ -61,8 +61,8 @@ numericBtns.forEach((item) => item.addEventListener("click", function(event){
     
 })); 
 
-const clear = document.querySelector("#clear");
-clear.addEventListener("click", function(event) {
+const clearAll = document.querySelector("#clearAll");
+clearAll.addEventListener("click", function(event) {
     num1 = "";
     num2 = "";
     operator = "";
@@ -74,6 +74,18 @@ clear.addEventListener("click", function(event) {
     setTimeout(function() {
         event.target.style.backgroundColor = "rgba(239, 239, 239, 1)"
     }, 50);
+});
+
+const clearEntry = document.querySelector("#clearEntry");
+clearEntry.addEventListener("click", function() {
+    if (displayValue != "0") {
+        displayValue = displayValue.slice(0, -1);
+        if (!displayValue) {
+            displayValue = "0"
+        }
+        console.log(displayValue);
+    }
+    display.innerHTML = displayValue; 
 });
 
 displayNum(displayValue);
