@@ -6,15 +6,20 @@ let clearDisplay = false;
 let numClick = false;
 let equationComplete = false;
 let decimalPressed = false;
+let lastClicked;
 
 const display = document.querySelector(".screen");
 
 const decimal = document.querySelector("#decimal")
-decimal.addEventListener("click", function() {
+decimal.addEventListener("click", function(event) {
     if (decimalPressed === false) {
         decimalPressed = true;
         displayNum(".");
     }
+    event.target.style.backgroundColor = "rgba(255, 149, 0, 0.5)";
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(255, 149, 0, 1)";
+    }, 50);
 })
 
 const operations = document.querySelectorAll(".operator");
@@ -22,15 +27,42 @@ operations.forEach((item) => item.addEventListener("click", function(event) {
     storeValue(event.target.id);
 }));
 
+const buttons = document.querySelectorAll("button");
+buttons.forEach((item) => item.addEventListener("click", function(event) {
+    if (event.target.classList.contains("holdColor") && lastClicked != event.target) {
+        event.target.style.backgroundColor = "white";
+        event.target.style.color = "rgba(255, 149, 0, 1)";
+    }
+    if (lastClicked && lastClicked.classList.contains("holdColor") && lastClicked != event.target) {
+        lastClicked.style.backgroundColor = "rgba(255, 149, 0, 1)";
+        lastClicked.style.color = "white";
+    }
+    lastClicked = event.target;
+}));
+
+const equals = document.querySelector("#equals");
+equals.addEventListener("click", function(event) {
+    event.target.style.backgroundColor = "rgba(255, 149, 0, 0.5)";
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(255, 149, 0, 1)";
+    }, 50);
+});
+
+
 const numericBtns = document.querySelectorAll(".number")
 numericBtns.forEach((item) => item.addEventListener("click", function(event){
     let numId = event.target.id.slice(-1);
     displayNum(numId);
     numClick = true;
+    event.target.style.backgroundColor = "rgba(80, 80, 80, 0.5)"
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(80, 80, 80, 1)"
+    }, 50);
+    
 })); 
 
 const clear = document.querySelector("#clear");
-clear.addEventListener("click", function () {
+clear.addEventListener("click", function(event) {
     num1 = "";
     num2 = "";
     operator = "";
@@ -38,6 +70,10 @@ clear.addEventListener("click", function () {
     displayValue = "";
     display.innerHTML = "0";
     decimalPressed = false;
+    event.target.style.backgroundColor = "rgba(239, 239, 239, 0.5)"
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(239, 239, 239, 1)"
+    }, 50);
 });
 
 displayNum(displayValue);
