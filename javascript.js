@@ -137,7 +137,9 @@ function displayNum(num) {
     if (equationComplete && userValue2 != "" || displayValue === "0") {
         displayValue = "";
     }
-    displayValue = displayValue + num;
+    if (displayValue.length < 9) {
+        displayValue = displayValue + num;
+    }
     display.innerHTML = displayValue;
 }
 
