@@ -36,7 +36,7 @@ clear.addEventListener("click", function () {
     operator = "";
     equationComplete = false;
     displayValue = "";
-    display.innerHTML = "";
+    display.innerHTML = "0";
     decimalPressed = false;
 });
 
@@ -82,6 +82,9 @@ function displayNum(num) {
     if (clearDisplay) {
         displayValue = "";
         clearDisplay = false;
+    }
+    if (display.textContent === "0" && num === ".") {
+        displayValue = "0";
     }
     displayValue = displayValue + num;
     display.innerHTML = displayValue;
