@@ -3,8 +3,6 @@ let userValue1 = "";
 let userValue2 = "";
 let operator = "";
 let clearDisplay = false;
-let numClick = false;
-let equationComplete = false;
 let decimalPressed = false;
 let lastClicked;
 
@@ -20,12 +18,57 @@ decimal.addEventListener("click", function(event) {
     setTimeout(function() {
         event.target.style.backgroundColor = "rgba(255, 149, 0, 1)";
     }, 50);
-})
+});
 
 const operations = document.querySelectorAll(".operator");
 operations.forEach((item) => item.addEventListener("click", function(event) {
     storeValue(event.target.id);
 }));
+
+const equals = document.querySelector("#equals");
+equals.addEventListener("click", function(event) {
+    event.target.style.backgroundColor = "rgba(255, 149, 0, 0.5)";
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(255, 149, 0, 1)";
+    }, 50);
+});
+
+const numericBtns = document.querySelectorAll(".number")
+numericBtns.forEach((item) => item.addEventListener("click", function(event){
+    let numId = event.target.id.slice(-1);
+    displayNum(numId);
+    event.target.style.backgroundColor = "rgba(80, 80, 80, 0.5)"
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(80, 80, 80, 1)"
+    }, 50);
+    
+})); 
+
+const clearAll = document.querySelector("#clearAll");
+clearAll.addEventListener("click", function(event) {
+    userValue1 = "";
+    userValue2 = "";
+    operator = "";
+    equationComplete = false;
+    displayValue = "0";
+    display.innerHTML = "0";
+    decimalPressed = false;
+    event.target.style.backgroundColor = "rgba(239, 239, 239, 0.5)"
+    setTimeout(function() {
+        event.target.style.backgroundColor = "rgba(239, 239, 239, 1)"
+    }, 50);
+});
+
+const clearEntry = document.querySelector("#clearEntry");
+clearEntry.addEventListener("click", function() {
+    if (displayValue != "0") {
+        displayValue = displayValue.slice(0, -1);
+        if (!displayValue) {
+            displayValue = "0";
+        }
+    }
+    display.innerHTML = displayValue; 
+});
 
 const buttons = document.querySelectorAll("button");
 buttons.forEach((item) => item.addEventListener("click", function(event) {
@@ -40,115 +83,72 @@ buttons.forEach((item) => item.addEventListener("click", function(event) {
     lastClicked = event.target;
 }));
 
-const equals = document.querySelector("#equals");
-equals.addEventListener("click", function(event) {
-    event.target.style.backgroundColor = "rgba(255, 149, 0, 0.5)";
-    setTimeout(function() {
-        event.target.style.backgroundColor = "rgba(255, 149, 0, 1)";
-    }, 50);
-});
-
-
-const numericBtns = document.querySelectorAll(".number")
-numericBtns.forEach((item) => item.addEventListener("click", function(event){
-    let numId = event.target.id.slice(-1);
-    displayNum(numId);
-    numClick = true;
-    event.target.style.backgroundColor = "rgba(80, 80, 80, 0.5)"
-    setTimeout(function() {
-        event.target.style.backgroundColor = "rgba(80, 80, 80, 1)"
-    }, 50);
-    
-})); 
-
-const clearAll = document.querySelector("#clearAll");
-clearAll.addEventListener("click", function(event) {
-    num1 = "";
-    num2 = "";
-    operator = "";
-    equationComplete = false;
-    displayValue = "";
-    display.innerHTML = "0";
-    decimalPressed = false;
-    event.target.style.backgroundColor = "rgba(239, 239, 239, 0.5)"
-    setTimeout(function() {
-        event.target.style.backgroundColor = "rgba(239, 239, 239, 1)"
-    }, 50);
-});
-
-const clearEntry = document.querySelector("#clearEntry");
-clearEntry.addEventListener("click", function() {
-    if (displayValue != "0") {
-        displayValue = displayValue.slice(0, -1);
-        if (!displayValue) {
-            displayValue = "0"
-        }
-        console.log(displayValue);
-    }
-    display.innerHTML = displayValue; 
-});
-
-displayNum(displayValue);
-
 function storeValue(operation) {
     if (operation != "equals") {
         operator = operation;
-        userValue1 = Number(displayValue);
+        if (userValue1 === "") {
+            userValue1 = Number(displayValue);
+        }
+        else if (userValue1 != "" && operator != ""){
+            userValue2 = Number(displayValue);
+        }
         clearDisplay = true;
-        equationComplete = true;
         decimalPressed = false;
     }
     else {
-        if (equationComplete) {
-            if (numClick === true) {
+        if (userValue1 != "" && operator != "") {
+            let solution
+            if (lastClicked.classList.contains("number")) {
                 userValue2 = Number(displayValue);
-                decimalPressed = false;
             }
-            if (userValue2 === 0 && operator === "divide") {
-                clearDisplay = true;
-                num1 = "";
-                num2 = "";
-                operator = "";
-                equationComplete = false;
-                display.innerHTML = "🤨🤯😵😟";
-                decimalPressed = false;
+            else if (lastClicked.id != "equals") {
+                userValue2 = userValue1;
             }
-            else {
-                let total = operate(userValue1, userValue2, operator);
-                userValue1 = total;
-                total = total.toString();
-                if (total.indexOf("\.") != -1){
-                    let splitNum = total.split(".")
-                    let wholeNum = splitNum[0].split("").length + 1;
-                    let numLength = 9 - wholeNum;
-                    total = Math.round(total * (10 ** numLength)) / (10 ** numLength);
-                }
-                else if (total.length > 9) {
-                    total = Number(total).toExponential(2);
-                }
-                clearDisplay = true;
-                displayNum(total);
-                numClick = false;
-                decimalPressed = false;
-            }
+            solution = operate(userValue1, userValue2, operator);
+            userValue1 = solution;
+            clearDisplay = true;
+            decimalPressed = false;
+            displayNum("", solution);
         }
     }
 }
 
-function displayNum(num) {
+function displayNum(num, solution = "none") {
     if (clearDisplay) {
         displayValue = "";
+        display.innerHTML = "";
         clearDisplay = false;
     }
-    if (display.textContent === "0" && num === ".") {
-        displayValue = "0";
+    solution = solution.toString();
+    if (solution === "none") {
+        if (displayValue.length < 9) {
+            if (displayValue === "0" && num != ".") {
+                displayValue = "";
+            }
+            if (displayValue === "" && num === ".") {
+                displayValue = "0";
+            }
+            displayValue = displayValue + num;
+        }
     }
-    if (equationComplete && userValue2 != "" || displayValue === "0") {
-        //check this weird zeroing error again
-        displayValue = "";
+    else if(solution === "error") {
+        userValue1 = "";
+        userValue2 = "";
+        operator = "";
+        clearDisplay = true;
+        displayValue = "🤨🤯😵😟";  
     }
-    if (displayValue.length < 9) {
-        displayValue = displayValue + num;
+    else {
+        if (solution.includes("\.") === true) {
+            let splitNum = solution.split(".")
+            let wholeNums = splitNum[0].split("").length + 1;
+            let fractionalLength = 9 - wholeNums;
+            solution = Math.round(solution * (10 ** fractionalLength)) / (10 ** fractionalLength);
+        }
+        else if(solution.length > 9) {
+            solution = Number(solution).toExponential(2);
+        }
+        displayValue = solution;
     }
     display.innerHTML = displayValue;
 }
@@ -162,6 +162,9 @@ function operate(num1, num2, operator) {
         case "multiply":
             return multiply(num1, num2);
         case "divide":
+            if (num2 === 0) {
+                return "error";
+            }
             return division(num1, num2);
     }
 }
@@ -179,6 +182,7 @@ function multiply (num1, num2) {
 } 
 
 function division (num1, num2) {
-    //let quotient = num1 / num2;
     return num1 / num2;
 }
+
+displayNum(displayValue);
