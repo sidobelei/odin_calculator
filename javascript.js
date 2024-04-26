@@ -5,6 +5,28 @@ let operator = "";
 let clearDisplay = false;
 let decimalPressed = false;
 let lastClicked;
+let keyPressed;
+const validKeys = {
+    "1": "one",
+    "2": "two",
+    "3": "three",
+    "4": "four",
+    "5": "five",
+    "6": "six",
+    "7": "seven",
+    "8": "eight",
+    "9": "nine",
+    "0": "zero",
+    "+": "add", 
+    "-": "subtract", 
+    "*": "multiply",
+    "/": "divide",
+    "=": "equals",
+    ".": "decimal",
+    "Enter": "equals",
+    "Backspace": "clearEntry",
+    "Delete": "clearAll",
+};
 
 const display = document.querySelector(".screen");
 
@@ -34,8 +56,40 @@ equals.addEventListener("click", function(event) {
 });
 
 const numericBtns = document.querySelectorAll(".number")
-numericBtns.forEach((item) => item.addEventListener("click", function(event){
-    let numId = event.target.id.slice(-1);
+numericBtns.forEach((item) => item.addEventListener("click", function(event) {
+    let numId = event.target.id;
+    switch (numId) {
+        case "one":
+            numId = "1";
+            break;
+        case "two":
+            numId = "2";
+            break;
+        case "three":
+            numId = "3";
+            break;
+        case "four":
+            numId = "4";
+            break;
+        case "five":
+            numId = "5";
+            break;
+        case "six":
+            numId = "6";
+            break;
+        case "seven":
+            numId = "7";
+            break;
+        case "eight":
+            numId = "8";
+            break;
+        case "nine":
+            numId = "9";
+            break;
+        case "zero":
+            numId = "0";
+            break;
+    }
     displayNum(numId);
     event.target.style.backgroundColor = "rgba(80, 80, 80, 0.5)"
     setTimeout(function() {
@@ -43,6 +97,14 @@ numericBtns.forEach((item) => item.addEventListener("click", function(event){
     }, 50);
     
 })); 
+
+document.addEventListener("keydown", function(event) {
+    keyPressed = event.key;
+    if (keyPressed in validKeys) {
+        let btnPressed = document.querySelector(`#${validKeys[keyPressed]}`);
+        btnPressed.click();
+    }
+});
 
 const clearAll = document.querySelector("#clearAll");
 clearAll.addEventListener("click", function(event) {
@@ -89,7 +151,7 @@ function storeValue(operation) {
         if (userValue1 === "") {
             userValue1 = Number(displayValue);
         }
-        else if (userValue1 != "" && operator != ""){
+        else if (userValue1 != "" && operator != "") {
             userValue2 = Number(displayValue);
         }
         clearDisplay = true;
