@@ -6,6 +6,7 @@ let clearDisplay = false;
 let decimalPressed = false;
 let lastClicked;
 let keyPressed;
+let equationComplete = false;
 const validKeys = {
     "1": "one",
     "2": "two",
@@ -111,10 +112,10 @@ clearAll.addEventListener("click", function(event) {
     userValue1 = "";
     userValue2 = "";
     operator = "";
-    equationComplete = false;
     displayValue = "0";
     display.innerHTML = "0";
     decimalPressed = false;
+    equationComplete = false;
     event.target.style.backgroundColor = "rgba(239, 239, 239, 0.5)"
     setTimeout(function() {
         event.target.style.backgroundColor = "rgba(239, 239, 239, 1)"
@@ -150,9 +151,14 @@ function storeValue(operation) {
         operator = operation;
         if (userValue1 === "") {
             userValue1 = Number(displayValue);
+            equationComplete = false;
         }
-        else if (userValue1 != "" && operator != "") {
+        else if (userValue1 != "" && operator != "" && !equationComplete) {
             userValue2 = Number(displayValue);
+        }
+        else if (userValue1 != "" && userValue2 != "" && equationComplete) {
+            userValue1 = Number(displayValue);
+            userValue2 = "";
         }
         clearDisplay = true;
         decimalPressed = false;
@@ -171,6 +177,7 @@ function storeValue(operation) {
             clearDisplay = true;
             decimalPressed = false;
             displayNum("", solution);
+            equationComplete = true;
         }
     }
 }
@@ -211,6 +218,7 @@ function displayNum(num, solution = "none") {
             solution = Number(solution).toExponential(2);
         }
         displayValue = solution;
+        clearDisplay = true;
     }
     display.innerHTML = displayValue;
 }
